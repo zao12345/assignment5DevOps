@@ -18,7 +18,7 @@ phases:
       - echo Image pushed to Amazon ECR
       # Output the ECR image URL
       - IMAGE_URL=$(aws ecr describe-images --repository-name assignment3 --region $AWS_DEFAULT_REGION --query 'images[0].imageUri' --output text)
-      - echo "ECR Image URL: $IMAGE_URL"
+      - echo "ECR Image URL:$IMAGE_URL"
       # Save the image URL to a file
       - echo "$IMAGE_URL" > image_url.txt
 
