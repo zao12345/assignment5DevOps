@@ -9,8 +9,8 @@ phases:
   build:
     commands:
       - echo Building Docker image...
-      - docker build -t 533267226679.dkr.ecr.us-east-1.amazonaws.com/assignment3:ver1 .
-      - docker tag 533267226679.dkr.ecr.us-east-1.amazonaws.com/assignment3:ver1 $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/assignment3:ver1
+      - docker build -t assignment3 .
+      - docker tag assignment3 533267226679.dkr.ecr.us-east-1.amazonaws.com/assignment3:ver1 
   post_build:
     commands:
       - echo Pushing Docker image to Amazon ECR...
