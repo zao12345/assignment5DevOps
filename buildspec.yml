@@ -26,4 +26,3 @@ artifacts:
   files:
     - image_url.txt
   discard-paths: yes
-
