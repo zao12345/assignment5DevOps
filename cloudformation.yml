@@ -193,7 +193,7 @@ Resources:
       FromPort: 3000
       ToPort: 3000
       SourceSecurityGroupId: !Ref OsimadeContainerSecurityGroup
-      GroupId: !Ref LoadBalancerSecurityGroup
+      GroupId: !Ref OsimadeLoadBalancerSecurityGroup
 
   OsimadeLoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
