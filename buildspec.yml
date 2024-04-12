@@ -1,0 +1,24 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+  build:
+    commands:
+      - echo Building Docker image...
+      - docker build -t 533267226679.dkr.ecr.us-east-1.amazonaws.com/assignment3:ver1 .
+      - docker tag 533267226679.dkr.ecr.us-east-1.amazonaws.com/assignment3:ver1 $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/assignment3:ver1
+  post_build:
+    commands:
+      - echo Pushing Docker image to Amazon ECR...
+      - docker push 533267226679.dkr.ecr.us-east-1.amazonaws.com/assignment3:ver1
+      - echo Image pushed to Amazon ECR
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: yes
+
