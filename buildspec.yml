@@ -16,9 +16,14 @@ phases:
       - echo Pushing Docker image to Amazon ECR...
       - docker push 533267226679.dkr.ecr.us-east-1.amazonaws.com/assignment3:ver1
       - echo Image pushed to Amazon ECR
+      # Output the ECR image URL
+      - IMAGE_URL=$(aws ecr describe-images --repository-name assignment3 --region $AWS_DEFAULT_REGION --query 'images[0].imageUri' --output text)
+      - echo "ECR Image URL: $IMAGE_URL"
+      # Save the image URL to a file
+      - echo "$IMAGE_URL" > image_url.txt
 
 artifacts:
   files:
-    - '**/*'
+    - image_url.txt
   discard-paths: yes
 
