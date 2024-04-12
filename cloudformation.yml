@@ -286,7 +286,7 @@ Resources:
       DesiredCount: 2
       LaunchType: FARGATE
       NetworkConfiguration: 
-        AwsVpcConfiguration:
+        AwsvpcConfiguration:
           AssignPublicIp: ENABLED
           Subnets:
             - !Ref PublicSubnet1
