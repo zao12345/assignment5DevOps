@@ -9,15 +9,15 @@ Resources:
       EnableDnsSupport: true
       EnableDnsHostnames: true
       Tags:
-      - Key: Name
-        Name: osimade-vpc
+        - Key: Name
+          Name: osimade-vpc
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
-      - Key: Name
-        Name: osimade-igw
+        - Key: Name
+          Name: osimade-igw
 
   AttachInternetGateway:
     Type: AWS::EC2::VPCGatewayAttachment
@@ -33,8 +33,8 @@ Resources:
       AvailabilityZone: us-east-1a
       MapPublicIpOnLaunch: true
       Tags:
-      - Key: Name
-        Name: osimade-pub-sub1
+        - Key: Name
+          Name: osimade-pub-sub1
 
   PublicSubnet2:
     Type: AWS::EC2::Subnet
@@ -44,8 +44,8 @@ Resources:
       AvailabilityZone: us-east-1b
       MapPublicIpOnLaunch: true
       Tags:
-      - Key: Name 
-        Name: osimade-pub-sub2
+        - Key: Name 
+          Name: osimade-pub-sub2
 
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
@@ -55,8 +55,8 @@ Resources:
       MapPublicIpOnLaunch: false
       AvailabilityZone: us-east-1a
       Tags:
-      - Key: Name  
-        Name: osimade-pri-sub1
+        - Key: Name  
+          Name: osimade-pri-sub1
 
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
@@ -66,16 +66,16 @@ Resources:
       MapPublicIpOnLaunch: false
       AvailabilityZone: us-east-1b
       Tags:
-      - Key: Name  
-        Name: osimade-pri-sub2
+        - Key: Name  
+          Name: osimade-pri-sub2
 
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref OsimadeVPC
       Tags:
-      - Key: Name  
-        Name: osimade-pub-rt
+        - Key: Name  
+          Name: osimade-pub-rt
 
   PublicRoute:
     Type: AWS::EC2::Route
@@ -101,16 +101,16 @@ Resources:
     Properties:
       VpcId: !Ref OsimadeVPC
       Tags:
-      - Key: Name  
-        Name: osimade-pri-rt1
+        - Key: Name  
+          Name: osimade-pri-rt1
 
   PrivateRouteTable2:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref OsimadeVPC
       Tags:
-      - Key: Name  
-        Name: osimade-pri-rt2
+        - Key: Name  
+          Name: osimade-pri-rt2
 
   PrivateSubnetRouteTableAssociation1:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -130,8 +130,8 @@ Resources:
       AllocationId: !GetAtt NATGatewayEIP1.AllocationId
       SubnetId: !Ref PublicSubnet1
       Tags:
-      - Key: Name  
-        Name: osimade-nat1
+        - Key: Name  
+          Name: osimade-nat1
 
   NATGateway2:
     Type: AWS::EC2::NatGateway
@@ -139,8 +139,8 @@ Resources:
       AllocationId: !GetAtt NATGatewayEIP2.AllocationId
       SubnetId: !Ref PublicSubnet2
       Tags:
-      - Key: Name  
-        Name: osimade-nat2
+        - Key: Name  
+          Name: osimade-nat2
 
   NATGatewayEIP1:
     Type: AWS::EC2::EIP
