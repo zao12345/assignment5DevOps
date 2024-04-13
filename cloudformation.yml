@@ -371,7 +371,7 @@ Resources:
   ScaleUpPolicy:
     Type: AWS::ApplicationAutoScaling::ScalingPolicy
     Properties:
-      PolicyName: !Sub '${Flaskapp}ScaleUpPolicy'
+      PolicyName: !Sub 'OsimadeServiceScaleUpPolicy'
       PolicyType: StepScaling
       ScalingTargetId: !Ref AutoScalingTarget
       StepScalingPolicyConfiguration:
@@ -385,7 +385,7 @@ Resources:
   ScaleDownPolicy:
     Type: AWS::ApplicationAutoScaling::ScalingPolicy
     Properties:
-      PolicyName: !Sub '${Flaskapp}ScaleDownPolicy'
+      PolicyName: !Sub 'OsimadeServiceScaleDownPolicy'
       PolicyType: StepScaling
       ScalingTargetId: !Ref AutoScalingTarget
       StepScalingPolicyConfiguration:
