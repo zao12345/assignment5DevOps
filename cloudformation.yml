@@ -289,8 +289,8 @@ Resources:
         AwsvpcConfiguration:
           AssignPublicIp: ENABLED
           Subnets:
-            - !Ref PublicSubnet1
-            - !Ref PublicSubnet2
+            - !Ref PrivateSubnet1
+            - !Ref PrivateSubnet2
           SecurityGroups:
             - !GetAtt OsimadeContainerSecurityGroup.GroupId
       LoadBalancers:
@@ -352,7 +352,7 @@ Resources:
               - 'sts:AssumeRole'
       Path: '/'
       Policies:
-        - PolicyName: root
+        - PolicyName: assignment3
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
