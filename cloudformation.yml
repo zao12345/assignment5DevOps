@@ -9,15 +9,13 @@ Resources:
       EnableDnsSupport: true
       EnableDnsHostnames: true
       Tags:
-        - Key: Name
-          Value: osimade-vpc
+        Name: osimade-vpc
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
-        - Key: Name
-          Value: osimade-igw
+        Name: osimade-igw
 
   AttachInternetGateway:
     Type: AWS::EC2::VPCGatewayAttachment
@@ -33,8 +31,7 @@ Resources:
       AvailabilityZone: us-east-1a
       MapPublicIpOnLaunch: true
       Tags:
-        - Key: Name
-          Value: osimade-pub-sub1
+        Name: osimade-pub-sub1
 
   PublicSubnet2:
     Type: AWS::EC2::Subnet
@@ -44,8 +41,7 @@ Resources:
       AvailabilityZone: us-east-1b
       MapPublicIpOnLaunch: true
       Tags:
-        - Key: Name
-          Value: osimade-pub-sub2
+        Name: osimade-pub-sub2
 
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
@@ -55,8 +51,7 @@ Resources:
       MapPublicIpOnLaunch: false
       AvailabilityZone: us-east-1a
       Tags:
-        - Key: Name
-          Value: osimade-pri-sub1
+        Name: osimade-pri-sub1
 
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
@@ -66,16 +61,14 @@ Resources:
       MapPublicIpOnLaunch: false
       AvailabilityZone: us-east-1b
       Tags:
-        - Key: Name
-          Value: osimade-pri-sub2
+        Name: osimade-pri-sub2
 
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref OsimadeVPC
       Tags:
-        - Key: Name
-          Value: osimade-pub-rt
+        Name: osimade-pub-rt
 
   PublicRoute:
     Type: AWS::EC2::Route
@@ -101,16 +94,14 @@ Resources:
     Properties:
       VpcId: !Ref OsimadeVPC
       Tags:
-        - Key: Name
-          Value: osimade-pri-rt1
+        Name: osimade-pri-rt1
 
   PrivateRouteTable2:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref OsimadeVPC
       Tags:
-        - Key: Name
-          Value: osimade-pri-rt2
+        Name: osimade-pri-rt2
 
   PrivateSubnetRouteTableAssociation1:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -130,8 +121,7 @@ Resources:
       AllocationId: !GetAtt NATGatewayEIP1.AllocationId
       SubnetId: !Ref PublicSubnet1
       Tags:
-        - Key: Name
-          Value: osimade-nat1
+        Name: osimade-nat1
 
   NATGateway2:
     Type: AWS::EC2::NatGateway
@@ -139,8 +129,7 @@ Resources:
       AllocationId: !GetAtt NATGatewayEIP2.AllocationId
       SubnetId: !Ref PublicSubnet2
       Tags:
-        - Key: Name
-          Value: osimade-nat2
+        Name: osimade-nat2
 
   NATGatewayEIP1:
     Type: AWS::EC2::EIP
@@ -193,7 +182,7 @@ Resources:
       FromPort: 3000
       ToPort: 3000
       SourceSecurityGroupId: !Ref OsimadeContainerSecurityGroup
-      GroupId: !Ref OsimadeLoadBalancerSecurityGroup
+      GroupId: !GetAtt OsimadeLoadBalancerSecurityGroup.GroupId
 
   OsimadeLoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -214,8 +203,8 @@ Resources:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
       IpProtocol: tcp
-      FromPort: 3000
-      ToPort: 3000
+      FromPort: 0
+      ToPort: 65535
       DestinationSecurityGroupId: !Ref OsimadeContainerSecurityGroup
       GroupId: !Ref OsimadeLoadBalancerSecurityGroup
 
@@ -238,7 +227,7 @@ Resources:
           TargetGroupArn: !Ref OsimadeTargetGroup
       LoadBalancerArn: !Ref OsimadeLoadBalancer
       Port: 80
-      Protocol: "HTTP"
+      Protocol: HTTP
 
   OsimadeTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -261,11 +250,11 @@ Resources:
         - Name: osimade-container
           Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/assignment3:ver1"
           LogConfiguration:
-              LogDriver: awslogs
-              Options:
-                awslogs-group: !Ref OsimadeServiceLogGroup
-                awslogs-stream-prefix: osimade
-                awslogs-region: !Ref AWS::Region
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref OsimadeServiceLogGroup
+              awslogs-stream-prefix: osimade
+              awslogs-region: !Ref AWS::Region
           PortMappings:
             - ContainerPort: 3000
       RequiresCompatibilities:
@@ -303,7 +292,7 @@ Resources:
     Properties:
       ClusterName: osimade-cluster
 
- OsimadeExecutionRole:
+  OsimadeExecutionRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -312,7 +301,6 @@ Resources:
             Principal:
               Service: ecs-tasks.amazonaws.com
             Action: sts:AssumeRole
-              - 'sts:AssumeRole'
       Path: '/'
       Policies:
         - PolicyName: CMP-Assignment3
@@ -339,7 +327,7 @@ Resources:
                   - logs:PutLogEvents
                 Resource: '*'
 
- AutoScalingRole:
+  AutoScalingRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -375,7 +363,7 @@ Resources:
         - '/'
         - - service
           - !Ref Cluster
-          - !GetAtt FrontendService.Name
+          - !GetAtt OsimadeService.Name
       ScalableDimension: ecs:service:DesiredCount
       ServiceNamespace: ecs
       RoleARN: !GetAtt AutoScalingRole.Arn
@@ -383,7 +371,7 @@ Resources:
   ScaleUpPolicy:
     Type: AWS::ApplicationAutoScaling::ScalingPolicy
     Properties:
-      PolicyName: !Sub '${FrontendService}ScaleUpPolicy'
+      PolicyName: !Sub '${Flaskapp}ScaleUpPolicy'
       PolicyType: StepScaling
       ScalingTargetId: !Ref AutoScalingTarget
       StepScalingPolicyConfiguration:
@@ -397,7 +385,7 @@ Resources:
   ScaleDownPolicy:
     Type: AWS::ApplicationAutoScaling::ScalingPolicy
     Properties:
-      PolicyName: !Sub '${FrontendService}ScaleDownPolicy'
+      PolicyName: !Sub '${Flaskapp}ScaleDownPolicy'
       PolicyType: StepScaling
       ScalingTargetId: !Ref AutoScalingTarget
       StepScalingPolicyConfiguration:
