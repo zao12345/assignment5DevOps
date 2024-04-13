@@ -6,4 +6,4 @@ def hello_cloud():
     return 'Hello from Osimade ECS Container'
  
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=3000)
