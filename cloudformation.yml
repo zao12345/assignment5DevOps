@@ -259,7 +259,7 @@ Resources:
       ExecutionRoleArn: !Ref OsimadeExecutionRole
       ContainerDefinitions:
         - Name: osimade-container
-          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/assignment5:ver1"
+          Image: "533267226679.dkr.ecr.us-east-1.amazonaws.com/assignment5:ver1"
           LogConfiguration:
             LogDriver: awslogs
             Options:
