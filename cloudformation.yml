@@ -296,7 +296,7 @@ Resources:
       LoadBalancers:
         - TargetGroupArn: !Ref OsimadeTargetGroup
           ContainerName: osimade-container
-          ContainerPort: 3000
+          ContainerPort: 8080
 
   OsimadeCluster:
     Type: AWS::ECS::Cluster
