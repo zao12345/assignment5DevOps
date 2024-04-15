@@ -10,14 +10,14 @@ Resources:
       EnableDnsHostnames: true
       Tags:
         - Key: Name
-          Value: osimade-vpc
+          Value: osimade_vpc
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
         - Key: Name
-          Value: osimade-igw
+          Value: osimade_igw
 
   AttachInternetGateway:
     Type: AWS::EC2::VPCGatewayAttachment
@@ -34,7 +34,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: osimade-pub-sub1
+          Value: public_subnet1
 
   PublicSubnet2:
     Type: AWS::EC2::Subnet
@@ -45,7 +45,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name 
-          Value: osimade-pub-sub2
+          Value: public_subnet2
 
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
@@ -56,7 +56,7 @@ Resources:
       AvailabilityZone: us-east-1a
       Tags:
         - Key: Name  
-          Value: osimade-pri-sub1
+          Value: private_subnet1
 
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
@@ -67,7 +67,7 @@ Resources:
       AvailabilityZone: us-east-1b
       Tags:
         - Key: Name  
-          Value: osimade-pri-sub2
+          Value: private_subnet2
 
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
@@ -75,7 +75,7 @@ Resources:
       VpcId: !Ref OsimadeVPC
       Tags:
         - Key: Name  
-          Value: osimade-pub-rt
+          Value: public_route_table
 
   PublicRoute:
     Type: AWS::EC2::Route
@@ -102,7 +102,7 @@ Resources:
       VpcId: !Ref OsimadeVPC
       Tags:
         - Key: Name  
-          Value: osimade-pri-rt1
+          Value: private_route_table1
 
   PrivateRouteTable2:
     Type: AWS::EC2::RouteTable
@@ -110,7 +110,7 @@ Resources:
       VpcId: !Ref OsimadeVPC
       Tags:
         - Key: Name  
-          Value: osimade-pri-rt2
+          Value: private_route_table2
 
   PrivateSubnetRouteTableAssociation1:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -131,7 +131,7 @@ Resources:
       SubnetId: !Ref PublicSubnet1
       Tags:
         - Key: Name  
-          Value: osimade-nat1
+          Value: osimade_ngw1
 
   NATGateway2:
     Type: AWS::EC2::NatGateway
@@ -140,7 +140,7 @@ Resources:
       SubnetId: !Ref PublicSubnet2
       Tags:
         - Key: Name  
-          Value: osimade-nat2
+          Value: osimade_ngw2
 
   NATGatewayEIP1:
     Type: AWS::EC2::EIP
@@ -280,7 +280,7 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn: OsimadeLoadBalancerListener
     Properties:
-      ServiceName: osimade-service
+      ServiceName: osimade_service
       Cluster: !Ref OsimadeCluster
       TaskDefinition: !Ref OsimadeTaskDefinition
       DesiredCount: 2
@@ -301,7 +301,7 @@ Resources:
   OsimadeCluster:
     Type: AWS::ECS::Cluster
     Properties:
-      ClusterName: osimade-cluster
+      ClusterName: osimade_cluster
 
   OsimadeExecutionRole:
     Type: AWS::IAM::Role
@@ -314,7 +314,7 @@ Resources:
             Action: sts:AssumeRole
       Path: '/'
       Policies:
-        - PolicyName: CMP-Assignment3
+        - PolicyName: ecr-access-policy
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -352,7 +352,7 @@ Resources:
               - 'sts:AssumeRole'
       Path: '/'
       Policies:
-        - PolicyName: assignment3
+        - PolicyName: ecr-access-policy2
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
